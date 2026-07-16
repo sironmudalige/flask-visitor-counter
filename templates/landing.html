@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siron's Cloud - Welcome</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #03060f;
+            --text-light: #f0f6fc;
+            --accent-blue: #38bdf8;
+            --accent-glow: #60a5fa;
+            --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: var(--font-family);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Ambient background video container */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Image with Ken Burns (slow zoom) effect */
+        .starry-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transform: scale(1.08);
+            filter: brightness(0.95) contrast(1.05);
+            animation: fadeInBg 1.5s ease-out forwards, kenBurns 8s ease-out forwards;
+        }
+
+        /* Pulsing Glow over the Moon (centered) */
+        .moon-glow-overlay {
+            position: absolute;
+            top: 45%; /* Slightly above center to match the moon in the image */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(56, 189, 248, 0.05) 40%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(10px);
+            z-index: 2;
+            pointer-events: none;
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        /* Twinkling stars canvas overlay */
+        .star-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Dark overlay for text readability */
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(3, 6, 15, 0.1) 0%, rgba(3, 6, 15, 0.75) 100%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Cinematic Title Content */
+        .content {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #ffffff;
+            opacity: 0;
+            animation: trackInTitle 2.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.3s forwards;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .title span {
+            color: var(--accent-blue);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: rgba(240, 246, 252, 0.6);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInText 1.5s ease-out 1.2s forwards;
+        }
+
+        /* Loading indicator at the bottom */
+        .loader-container {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            width: 180px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-glow));
+            box-shadow: 0 0 8px var(--accent-blue);
+            animation: fillProgress 6s linear forwards;
+        }
+
+        /* Keyframes */
+        @keyframes fadeInBg {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1.08) translate(0, 0); }
+            100% { transform: scale(1.01) translate(-0.5%, -0.5%); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+        }
+
+        @keyframes trackInTitle {
+            0% {
+                letter-spacing: -4px;
+                opacity: 0;
+                filter: blur(8px);
+            }
+            40% {
+                opacity: 0.6;
+                filter: blur(2px);
+            }
+            100% {
+                letter-spacing: 1px;
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: translateY(5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <!-- Main Starry Background Image -->
+        <img class="starry-bg" src="{{ url_for('static', filename='starry_night.png') }}" alt="Starry Night">
+        
+        <!-- Pulsing glow over the moon center -->
+        <div class="moon-glow-overlay"></div>
+        
+        <!-- Twinkling stars and shooting stars canvas -->
+        <canvas class="star-canvas" id="canvas"></canvas>
+        
+        <!-- Vignette overlay for cinematic mood -->
+        <div class="vignette-overlay"></div>
+    </div>
+
+    <!-- Cinematic Text Content -->
+    <div class="content">
+        <h1 class="title">Siron's Cloud <span>Guestbook</span></h1>
+        <p class="subtitle">Entering Space</p>
+    </div>
+
+    <!-- Progress indicator -->
+    <div class="loader-container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // Starry Night Animation script
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initStars();
+        });
+
+        const stars = [];
+        const shootingStars = [];
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.alpha = Math.random();
+                // Speed of twinkling
+                this.speed = Math.random() * 0.02 + 0.005;
+                this.direction = Math.random() > 0.5 ? 1 : -1;
+            }
+
+            update() {
+                this.alpha += this.speed * this.direction;
+                if (this.alpha >= 1) {
+                    this.alpha = 1;
+                    this.direction = -1;
+                } else if (this.alpha <= 0.1) {
+                    this.alpha = 0.1;
+                    this.direction = 1;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * (height * 0.5); // Spawn in top half
+                this.len = Math.random() * 80 + 40;
+                this.speed = Math.random() * 15 + 10;
+                this.angle = (Math.random() * 15 + 25) * Math.PI / 180; // Go down and right
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+                this.active = true;
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.025;
+                if (this.opacity <= 0 || this.x > width || this.y > height) {
+                    this.active = false;
+                }
+            }
+
+            draw() {
+                if (!this.active) return;
+                
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
+                ctx.stroke();
+            }
+        }
+
+        function initStars() {
+            stars.length = 0;
+            // Generate stars proportional to screen size
+            const count = Math.floor((width * height) / 8000);
+            for (let i = 0; i < count; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw twinkling background stars
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            // Randomly trigger shooting stars (approx 2.5% chance per frame)
+            if (Math.random() < 0.015 && shootingStars.length < 2) {
+                shootingStars.push(new ShootingStar());
+            }
+
+            // Draw active shooting stars
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+                s.update();
+                s.draw();
+                if (!s.active) {
+                    shootingStars.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize and start loop
+        initStars();
+        animate();
+
+        // Automated Redirect after 6 seconds
+        setTimeout(() => {
+            // Apply a smooth fade out transition
+            document.body.style.transition = 'opacity 0.6s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = "{{ url_for('guestbook') }}";
+            }, 60000000); // safety pad
+            window.location.href = "{{ url_for('guestbook') }}";
+        }, 6000);
+    </script>
+</body>
+</html>
