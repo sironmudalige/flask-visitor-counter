@@ -1,53 +1,61 @@
-# Flask Visitor Counter & Guestbook ☁️
+# Flask Visitor Counter & Guestbook 🐳☁️
 
-A full-stack Python web application built and deployed 
-on AWS EC2 as part of my cloud engineering journey.
+A full-stack Python web application containerized
+with Docker and deployed on AWS EC2.
 
 ## 🌍 Live Demo
-http://13.62.104.80:5000
+http://YOUR-EC2-IP:5000
 
 ## 🔧 Tech Stack
-- **Backend:** Python, Flask
+- **Backend:** Python, Flask, Gunicorn
 - **Database:** SQLite
+- **Container:** Docker, Docker Compose
 - **Server:** AWS EC2 (Ubuntu 22.04, t2.micro)
+- **Registry:** Docker Hub
 - **Version Control:** Git & GitHub
 
 ## 📋 Features
 - Tracks and displays total visitor count
 - Guestbook where visitors can leave messages
-- Messages stored persistently in SQLite database
-- Clean modern dark-themed UI
-- Runs as a systemd service (auto-restarts on reboot)
+- Data persists using Docker volumes
+- Production-ready with Gunicorn WSGI server
+- Auto-restarts on container or server failure
+- 🐳 Running in Docker badge on UI
 
 ## 🏗️ Architecture
-Browser → AWS EC2 (Ubuntu 22.04) → Flask App → SQLite Database
+Browser → AWS EC2 (Ubuntu 22.04) → Docker Container → Flask/Gunicorn → SQLite
 
-## ☁️ What I learned
-- Provisioning and configuring AWS EC2 instances
-- Setting up Security Groups (ports 22, 80, 5000)
-- Connecting to remote servers via SSH
-- Deploying Python applications on Linux servers
-- Managing virtual environments on a remote server
-- Running apps as systemd services for auto-restart
-- Hardening server security (Fail2ban, disabled root login)
-- Understanding public vs private IP addresses in AWS
+## 🐳 Run with Docker (one command)
+docker pull sironmudalige/flask-visitor-counter:v2
+docker run -p 5000:5000 sironmudalige/flask-visitor-counter:v2
 
-## 🚀 Run Locally
-```bash
+Visit: http://localhost:5000
+
+## 🚀 Run Locally Without Docker
 git clone https://github.com/sironmudalige/flask-visitor-counter.git
 cd flask-visitor-counter
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 flask run
-```
 
 Visit: http://localhost:5000
 
-## 👨💻 Author
+## ☁️ What I learned
+- Writing production Dockerfiles
+- Docker layer caching for faster builds
+- Docker Compose for container management
+- Docker volumes for data persistence
+- Pushing images to Docker Hub
+- Deploying Docker containers on AWS EC2
+- Running Flask with Gunicorn in production
+- Container auto-restart policies
+- Difference between GitHub and Docker Hub
+
+## 👨‍💻 Author
 **Siron Mudalige**
 Computer Systems & Network Engineering Undergraduate
 Building toward a career in Cloud Engineering
 
-[GitHub](https://github.com/sironmudalige) | 
+[GitHub](https://github.com/sironmudalige) |
 [LinkedIn](https://linkedin.com/in/YOUR-LINKEDIN-HERE)
