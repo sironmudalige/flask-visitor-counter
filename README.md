@@ -4,7 +4,7 @@ A full-stack Python web application containerized
 with Docker and deployed on AWS EC2.
 
 ## 🌍 Live Demo
-http://YOUR-EC2-IP:5000
+http://16.192.130.167:5000
 
 ## 🔧 Tech Stack
 - **Backend:** Python, Flask, Gunicorn
